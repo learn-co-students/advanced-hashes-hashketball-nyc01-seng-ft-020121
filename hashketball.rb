@@ -1,4 +1,7 @@
 # Write your code below game_hash
+
+require "pry"
+
 def game_hash
   {
     home: {
@@ -126,4 +129,84 @@ def game_hash
   }
 end
 
-# Write code here
+def num_points_scored(p_research)
+  game_hash.count do |team, team_stats|
+    team_stats[:players].count do |pl|
+      if pl[:player_name] == p_research
+        return pl[:points]
+      end
+    end
+  end
+end
+
+def shoe_size(nm)
+  game_hash.count do |team, team_stats|
+    team_stats[:players].count do |pl|
+      if pl[:player_name] == nm
+        return pl[:shoe]
+      end
+    end
+  end
+end
+
+def team_colors(team_nm)
+  if team_nm.downcase == "charlotte hornets" 
+    return game_hash[:away][:colors]
+  else return game_hash[:home][:colors]
+  end
+end
+
+def team_names
+  game_hash.map do |team, team_stats|
+    team_stats[:team_name]
+  end
+end
+
+def player_numbers(team_nm)
+  array_of_jersey_numbers = []
+  game_hash.count do |team, team_stats|
+    if team_stats[:team_name] == team_nm 
+      team_stats.count do |key, value|
+        if key == :players
+          value.each do |pl|
+          array_of_jersey_numbers.push(pl[:number])
+          end
+        end
+      end
+    end
+  end
+  return array_of_jersey_numbers
+end
+
+def player_stats(player_nm)
+  game_hash.count do |team, team_stats|
+    team_stats.count do |key, value|
+      if key == :players
+        value.each do |pl|
+          if player_nm == pl[:player_name]
+            return pl
+          end
+        end
+      end
+    end
+  end
+end
+
+
+def big_shoe_rebounds
+  b_shoe = 0
+  rb = 0
+  game_hash.count do |team, team_stats|
+    team_stats[:players].count do |pl|
+      if pl[:shoe] > b_shoe
+        binding.pry
+        b_shoe = pl[:shoe]
+        rb = pl[:rebounds]
+      end
+    end
+  end
+  return rb
+end
+
+
+  
